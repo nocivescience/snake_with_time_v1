@@ -5,6 +5,7 @@ let stepsTaken;
 let snakePosition;
 let constrast;
 let constrastIncrease=0.5;
+let fadeExponential=1.0214;
 let fadeSpeed=5000;
 let score;
 let scoreEl=document.querySelector('.score');
@@ -41,7 +42,7 @@ function main(timestamp){
       const totalElapsedSiceLastCall=timestamp-lastTimestamp;
       const stepsShouldHaveTaken=Math.floor(totalElapsedTime/speed);
       const percentageOfStep=(totalElapsedTime%speed)/speed;
-      if(stepsTaken!=stepsShouldHaveTaken){
+      if(stepsTaken==stepsShouldHaveTaken){   //voler a colocar el !==
         stepAndTransition(percentageOfStep);
         const headPosition=snakePosition[snakePosition.length-1];
         if(headPosition===171){
@@ -50,8 +51,11 @@ function main(timestamp){
           addNewApple();
           constrast=Math.min(1,constrast+constrastIncrease);
           console.log(`Constrast Increase by ${constrastIncrease*100}%`);
-          console.log('New fade speed(from 100% to 0% in ms)', Math.pow(fadeExponencital,score)*fadeSpeed);
+          console.log('New fade speed(from 100% to 0% in ms)', Math.pow(fadeExponential,2)*fadeSpeed);
         }
+        stepsTaken++;
+      }else{
+        transition(percentageOfStep);
       }
     }
   }catch(error){
@@ -88,4 +92,7 @@ function setTile(element, overrides={}){
     left:'auto',
     'background-color':'transparent',
   };
+}
+function transition(percentageOfStep){
+  console.log(percentageOfStep);
 }
