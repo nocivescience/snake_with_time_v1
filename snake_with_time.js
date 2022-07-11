@@ -3,7 +3,15 @@ let startTimestamp=undefined;
 let lastTimestamp=undefined;
 let stepsTaken;
 let snakePosition;
+let constrast;
+let constrastIncrease=0.5;
+let fadeSpeed=5000;
 let score;
+let scoreEl=document.querySelector('.score');
+const tiles=document.querySelectorAll('.tile');
+const containerEl=document.querySelector('.container');
+const width=15;
+const height=15;
 const speed=200;
 const noteElement=document.querySelector('footer');
 window.addEventListener('keydown',function(e){
@@ -38,7 +46,11 @@ function main(timestamp){
         const headPosition=snakePosition[snakePosition.length-1];
         if(headPosition===171){
           score++;
-          console.log(score);
+          scoreEl.innerHTML=`tu puntaje: ${score}`;
+          addNewApple();
+          constrast=Math.min(1,constrast+constrastIncrease);
+          console.log(`Constrast Increase by ${constrastIncrease*100}%`);
+          console.log('New fade speed(from 100% to 0% in ms)', Math.pow(fadeExponencital,score)*fadeSpeed);
         }
       }
     }
@@ -53,4 +65,27 @@ function stepAndTransition(percentageOfStep=null){
 function resetGame(){
   snakePosition=[168,169,170,171];
   score=0;
+}
+function addNewApple(){
+  let newPosition;
+  do{
+    newPosition=Math.floor(Math.random()*(width*height));
+  }while(
+    snakePosition.includes(newPosition)
+  );
+  setTile(tiles[0],{
+    'background-color':'red',
+    'border-radius':'50%',
+  });
+};
+function setTile(element, overrides={}){
+  const defaults={
+    width:'100%',
+    height:'100%',
+    top:'auto',
+    right:'auto',
+    bottom:'auto',
+    left:'auto',
+    'background-color':'transparent',
+  };
 }
